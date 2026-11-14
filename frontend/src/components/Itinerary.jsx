@@ -2,7 +2,7 @@ import React from 'react';
 import { duration } from '../format.js';
 import WalkingTime from './WalkingTime.jsx';
 
-export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, showDetails, reorder, remove }) {
+export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, showDetails, reorder, remove, addDay, removeLastDay }) {
   const cityCount = new Set(dayPlaces.map(place => place.city)).size;
   const minutes = dayPlaces.reduce((total, place) => total + (place.duration_minutes ?? 0), 0);
 
@@ -10,7 +10,11 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
     <aside id="itinerary" className="itinerary" aria-labelledby="trip-title">
       <div className="itinerary-heading">
         <h2 id="trip-title">My itinerary</h2>
-        <span className="trip-duration">3 days</span>
+        <span className="trip-duration">{days.length} {days.length === 1 ? 'day' : 'days'}</span>
+      </div>
+      <div className="day-controls">
+        <button type="button" className="add-button" onClick={addDay}>Add day</button>
+        <button type="button" className="add-button" disabled={days.length === 1} onClick={removeLastDay}>Remove last day</button>
       </div>
       <div className="days" role="group" aria-label="Choose itinerary day">
         {days.map((day, index) => (

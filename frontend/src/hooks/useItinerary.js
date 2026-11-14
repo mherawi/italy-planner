@@ -5,7 +5,7 @@ const storageKey = 'italy-planner-days-v1';
 function loadDays() {
   try {
     const saved = JSON.parse(localStorage.getItem(storageKey));
-    if (Array.isArray(saved) && saved.length === 3 &&
+    if (Array.isArray(saved) && saved.length > 0 &&
         saved.every(day => Array.isArray(day) && day.every(id => typeof id === 'string'))) {
       return saved;
     }
@@ -29,6 +29,23 @@ export function useItinerary(byId) {
   }, [days]);
 
   const dayPlaces = days[activeDay].map(id => byId.get(id)).filter(Boolean);
+
+  function addDay() {
+    setDays(current => [...current, []]);
+    setActiveDay(days.length);
+    setAnnouncement('Day ' + (days.length + 1) + ' added');
+  }
+
+  function removeLastDay() {
+    if (days.length === 1) return;
+    const lastDay = days.at(-1);
+    if (lastDay.length > 0 &&
+        !window.confirm('Remove Day ' + days.length + ' and all stops on that day?')) return;
+
+    setDays(current => current.slice(0, -1));
+    setActiveDay(current => Math.min(current, days.length - 2));
+    setAnnouncement('Day ' + days.length + ' removed');
+  }
 
   function add(id) {
     setDays(current => current.map((day, index) =>
@@ -54,5 +71,5 @@ export function useItinerary(byId) {
     setAnnouncement(byId.get(id).name + (offset < 0 ? ' moved earlier' : ' moved later'));
   }
 
-  return { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, announcement };
+  return { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, addDay, removeLastDay, announcement };
 }

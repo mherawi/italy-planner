@@ -10,7 +10,7 @@ export default function App() {
   const [profile, setProfile] = useState(null);
   const { places, status, retry } = usePlaces();
   const byId = new Map(places.map(place => [place.id, place]));
-  const { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, announcement } = useItinerary(byId);
+  const { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, addDay, removeLastDay, announcement } = useItinerary(byId);
   const [selected, setSelected] = useState(null);
   const dialog = useRef(null);
 
@@ -47,6 +47,7 @@ export default function App() {
           <PlaceCatalog places={places} status={status} retry={retry} scheduledIds={days[activeDay]}
             activeDay={activeDay} add={add} showDetails={showDetails} />
           <Itinerary days={days} activeDay={activeDay} setActiveDay={setActiveDay} dayPlaces={dayPlaces}
+            addDay={addDay} removeLastDay={removeLastDay}
             showDetails={showDetails} reorder={reorder} remove={remove} />
         </div>
       </main>
