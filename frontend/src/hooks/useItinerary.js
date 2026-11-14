@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const storageKey = 'italy-planner-days-v1';
+const startDateKey = 'italy-planner-start-date';
 
 function loadDays() {
   try {
@@ -19,6 +20,22 @@ export function useItinerary(byId) {
   const [days, setDays] = useState(loadDays);
   const [activeDay, setActiveDay] = useState(0);
   const [announcement, setAnnouncement] = useState('');
+  const [startDate, setStartDate] = useState(() => {
+    try {
+      return localStorage.getItem(startDateKey) ?? '';
+    } catch {
+      return '';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      if (startDate) localStorage.setItem(startDateKey, startDate);
+      else localStorage.removeItem(startDateKey);
+    } catch {
+      // Keep the date in memory when browser storage is unavailable.
+    }
+  }, [startDate]);
 
   useEffect(() => {
     try {
@@ -71,5 +88,5 @@ export function useItinerary(byId) {
     setAnnouncement(byId.get(id).name + (offset < 0 ? ' moved earlier' : ' moved later'));
   }
 
-  return { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, addDay, removeLastDay, announcement };
+  return { days, activeDay, setActiveDay, dayPlaces, add, remove, reorder, addDay, removeLastDay, announcement, startDate, setStartDate };
 }

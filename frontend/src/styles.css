@@ -109,12 +109,15 @@ nav { display: flex; align-items: center; gap: 24px; font-size: 14px; font-weigh
 .catalog-status button { margin-top: 10px; }
 .itinerary { position: sticky; top: 18px; background: #f0eee4; border: 1px solid #dcd8ca; border-radius: 12px; padding: 20px; }
 .itinerary h2 { font-size: 37px; }
+.trip-date { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.trip-date label { flex-basis: 100%; font-size: 14px; font-weight: 600; }
+.trip-date input { min-width: 0; padding: 6px 8px; border: 1px solid var(--border); border-radius: 5px; }
+.days time { font-size: 12px; font-weight: 400; }
 .trip-duration { color: #5e6452; font-size: 11px; font-weight: 700; background: #e1e5d5; padding: 5px 8px; border-radius: 4px; white-space: nowrap; }
 .day-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 5px; border: 1px solid #ddd9cb; border-radius: 7px; background: #e8e5d9; padding: 4px; margin-top: 10px; }
-.days button { display: flex; justify-content: center; align-items: center; gap: 5px; border: 0; border-radius: 4px; background: transparent; color: var(--ink); padding: 8px 3px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.days button { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; border: 0; border-radius: 4px; background: transparent; color: var(--ink); padding: 8px 3px; font-size: 13px; font-weight: 700; white-space: nowrap; }
 .days button[aria-pressed='true'] { background: var(--green); color: #fffdf7; }
-.days small { font-size: 10px; }
 .day-summary { display: flex; justify-content: space-between; gap: 8px; margin: 13px 0; color: var(--muted); font-size: 12px; font-weight: 600; }
 .empty-day { display: grid; justify-items: center; text-align: center; border: 1px dashed #c9c5b7; border-radius: 8px; padding: 22px 15px; }
 .empty-day > span { color: #9c5539; margin-bottom: 5px; }

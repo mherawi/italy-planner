@@ -1,8 +1,9 @@
 import React from 'react';
-import { duration } from '../format.js';
+import { duration, itineraryDate } from '../format.js';
 import WalkingTime from './WalkingTime.jsx';
 
-export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, showDetails, reorder, remove, addDay, removeLastDay }) {
+export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, showDetails, reorder, remove,
+  addDay, removeLastDay, startDate, setStartDate }) {
   const cityCount = new Set(dayPlaces.map(place => place.city)).size;
   const minutes = dayPlaces.reduce((total, place) => total + (place.duration_minutes ?? 0), 0);
 
@@ -12,16 +13,25 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
         <h2 id="trip-title">My itinerary</h2>
         <span className="trip-duration">{days.length} {days.length === 1 ? 'day' : 'days'}</span>
       </div>
+      <div className="trip-date">
+        <label htmlFor="trip-start-date">Trip start date</label>
+        <input id="trip-start-date" type="date" value={startDate} onChange={event => setStartDate(event.target.value)} />
+        {startDate && <button type="button" className="add-button" onClick={() => setStartDate('')}>Clear date</button>}
+      </div>
       <div className="day-controls">
         <button type="button" className="add-button" onClick={addDay}>Add day</button>
         <button type="button" className="add-button" disabled={days.length === 1} onClick={removeLastDay}>Remove last day</button>
       </div>
       <div className="days" role="group" aria-label="Choose itinerary day">
-        {days.map((day, index) => (
-          <button key={index} aria-pressed={activeDay === index} onClick={() => setActiveDay(index)}>
-            Day {index + 1}{day.length > 0 && <small>{day.length}</small>}
-          </button>
-        ))}
+        {days.map((_, index) => {
+          const date = itineraryDate(startDate, index);
+          return (
+            <button key={index} aria-pressed={activeDay === index} onClick={() => setActiveDay(index)}>
+              <span>Day {index + 1}</span>
+              {date && <time dateTime={date.value}>{date.label}</time>}
+            </button>
+          );
+        })}
       </div>
       <div className="day-summary">
         <span>{dayPlaces.length} {dayPlaces.length === 1 ? 'stop' : 'stops'}</span>
