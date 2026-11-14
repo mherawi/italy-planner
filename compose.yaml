@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/italy
+      SPRING_DATASOURCE_USERNAME: italy
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-italy-local}
+      OPENROUTESERVICE_API_KEY: ${OPENROUTESERVICE_API_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: italy
+      POSTGRES_USER: italy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-italy-local}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "italy", "-d", "italy"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  postgres-data:
