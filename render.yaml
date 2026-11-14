@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: italy-planner
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/places
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: PLANNER_IMPORT_ENABLED
+        value: "false"
+      - key: SERVER_SERVLET_SESSION_COOKIE_SECURE
+        value: "true"

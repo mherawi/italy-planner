@@ -1,6 +1,7 @@
 package com.italyplanner;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -21,10 +22,13 @@ import java.util.Map;
 public class PlaceController {
     private final PlaceCatalog catalog;
     private final PlaceImporter importer;
+    private final boolean importEnabled;
 
-    public PlaceController(PlaceCatalog catalog, PlaceImporter importer) {
+    public PlaceController(PlaceCatalog catalog, PlaceImporter importer,
+                           @Value("${planner.import.enabled:true}") boolean importEnabled) {
         this.catalog = catalog;
         this.importer = importer;
+        this.importEnabled = importEnabled;
     }
 
     @GetMapping
@@ -44,6 +48,9 @@ public class PlaceController {
 
     @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> importPlaces(@RequestBody JsonNode places) {
+        if (!importEnabled) {
+            return ResponseEntity.notFound().build();
+        }
         try {
             return ResponseEntity.ok(Map.of("imported", importer.importPlaces(places)));
         } catch (IllegalArgumentException exception) {
