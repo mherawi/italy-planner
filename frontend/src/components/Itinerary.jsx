@@ -38,6 +38,7 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
         <span>{dayPlaces.length} {dayPlaces.length === 1 ? 'stop' : 'stops'}</span>
         {minutes > 0 && <span>{duration(minutes)} visiting</span>}
       </div>
+      {dayPlaces.length > 6 && <p className="activity-note">You might have too many activities for one day.</p>}
       {dayPlaces.length === 0 ? (
         <div className="empty-day">
           <span aria-hidden="true">✦</span>
@@ -45,7 +46,7 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
           <p>Use the add button on a place to put it on this day.</p>
         </div>
       ) : (
-        <ol className="stops">
+        <ol className="stops" tabIndex={0} aria-label={'Activities for day ' + (activeDay + 1)}>
           {dayPlaces.map((place, index) => (
             <li key={place.id}>
               <span className="stop-number" aria-hidden="true">{index + 1}</span>

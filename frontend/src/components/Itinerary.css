@@ -18,7 +18,8 @@
 .empty-day p, .save-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
 .empty-day p { margin-top: 5px; max-width: 200px; }
 .save-note { margin-top: 13px; }
-.stops { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+.activity-note { margin-bottom: 8px; color: var(--muted); font-size: 12px; }
+.stops { list-style: none; padding: 4px; margin: -4px; display: grid; gap: 7px; max-height: 26rem; overflow-y: auto; }
 .stops li { display: flex; gap: 9px; padding: 10px; background: var(--paper); border: 1px solid var(--border); border-radius: 6px; }
 .stop-number { display: grid; place-items: center; flex: 0 0 22px; height: 22px; border-radius: 50%; color: var(--green); background: #e7ebd9; font-size: 11px; font-weight: 700; }
 .stop-body { min-width: 0; }

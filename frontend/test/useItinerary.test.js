@@ -97,7 +97,7 @@ test('adds, reorders, and removes stops on the active day and saves the result',
   assert.deepEqual(JSON.parse(localStorage.getItem(storageKey)), planner.days);
 });
 
-test('selects a new day and asks before removing it when it contains stops', context => {
+test('selects a new day and removes it with its stops without prompting', context => {
   mountPlanner();
   act(() => planner.addDay());
   assert.equal(planner.days.length, 4);
@@ -106,11 +106,7 @@ test('selects a new day and asks before removing it when it contains stops', con
 
   const confirm = context.mock.method(window, 'confirm', () => false);
   act(() => planner.removeLastDay());
-  assert.equal(confirm.mock.callCount(), 1);
-  assert.deepEqual(planner.dayPlaces, [gallery]);
-
-  confirm.mock.mockImplementation(() => true);
-  act(() => planner.removeLastDay());
+  assert.equal(confirm.mock.callCount(), 0);
   assert.deepEqual(planner.days, [[], [], []]);
   assert.equal(planner.activeDay, 2);
 });

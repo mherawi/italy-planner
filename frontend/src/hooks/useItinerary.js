@@ -58,10 +58,6 @@ export function useItinerary(byId, accountPlan) {
 
   function removeLastDay() {
     if (days.length === 1) return;
-    const lastDay = days.at(-1);
-    if (lastDay.length > 0 &&
-        !window.confirm('Remove Day ' + days.length + ' and all stops on that day?')) return;
-
     setDays(current => current.slice(0, -1));
     setActiveDay(current => Math.min(current, days.length - 2));
     setAnnouncement('Day ' + days.length + ' removed');
