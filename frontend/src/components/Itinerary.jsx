@@ -38,7 +38,6 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
         <span>{dayPlaces.length} {dayPlaces.length === 1 ? 'stop' : 'stops'}</span>
         {minutes > 0 && <span>{duration(minutes)} visiting</span>}
       </div>
-      {dayPlaces.length > 6 && <p className="activity-note">You might have too many activities for one day.</p>}
       {dayPlaces.length === 0 ? (
         <div className="empty-day">
           <span aria-hidden="true">✦</span>
@@ -65,7 +64,8 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
         </ol>
       )}
       {cityCount > 1 && <p className="trip-warning">This day includes multiple cities. Check travel time between stops.</p>}
-      {minutes > 480 && <p className="trip-warning">Visits add up to more than 8 hours before travel.</p>}
+      {minutes > 480 && <p className="trip-warning">You have over 8 hours of activities planned. Allow extra time to get between stops.</p>}
+      {dayPlaces.length > 6 && <p className="trip-warning">You might have too many activities for one day.</p>}
       {save ? (
         <div className="save-note">
           <button type="button" className="add-button" disabled={saving || saved} onClick={save}>
