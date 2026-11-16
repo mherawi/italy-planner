@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './PlaceCatalog.css';
 import PlaceCard from './PlaceCard.jsx';
 
+const placesPerPage = 8;
 const categories = [
   ['All places', []],
   ['Food & drink', ['restaurant', 'cafe', 'bar', 'market', 'vineyard', 'winery', 'food_shop', 'bakery', 'gelateria', 'food_experience']],
@@ -14,7 +15,8 @@ export default function PlaceCatalog({ places, status, retry, scheduledIds, acti
   const [tag, setTag] = useState('');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState(0);
-  const [limit, setLimit] = useState(8);
+  const [page, setPage] = useState(1);
+  const catalog = useRef(null);
 
   const cities = [...new Set(places.map(place => place.city))].sort();
   const tags = [...new Set(places.flatMap(place => place.tags ?? []))].sort();
@@ -26,10 +28,18 @@ export default function PlaceCatalog({ places, status, retry, scheduledIds, acti
       (!category || categories[category][1].includes(place.type)) &&
       (!search || searchable.some(value => value?.toLowerCase().includes(search)));
   });
+  const pageCount = Math.ceil(results.length / placesPerPage);
+  const currentPage = Math.min(page, Math.max(1, pageCount));
+  const firstResult = (currentPage - 1) * placesPerPage;
+
+  function changePage(nextPage) {
+    setPage(nextPage);
+    catalog.current.scrollIntoView({ block: 'start' });
+  }
 
   function changeFilter(setter, value) {
     setter(value);
-    setLimit(8);
+    setPage(1);
   }
 
   function resetFilters() {
@@ -37,11 +47,11 @@ export default function PlaceCatalog({ places, status, retry, scheduledIds, acti
     setTag('');
     setQuery('');
     setCategory(0);
-    setLimit(8);
+    setPage(1);
   }
 
   return (
-    <section id="explore" aria-labelledby="explore-title">
+    <section id="explore" ref={catalog} aria-labelledby="explore-title">
       <div className="section-heading">
         <h2 id="explore-title">Explore places</h2>
         {status === 'ready' && <span aria-live="polite">{results.length} {results.length === 1 ? 'place' : 'places'}</span>}
@@ -83,12 +93,25 @@ export default function PlaceCatalog({ places, status, retry, scheduledIds, acti
         <button onClick={resetFilters}>Clear filters</button>
       </div>}
       <div className="places">
-        {results.slice(0, limit).map((place, index) => (
-          <PlaceCard key={place.id} place={place} index={index} scheduled={scheduledIds.includes(place.id)}
+        {results.slice(firstResult, firstResult + placesPerPage).map((place, index) => (
+          <PlaceCard key={place.id} place={place} index={firstResult + index} scheduled={scheduledIds.includes(place.id)}
             activeDay={activeDay} add={add} showDetails={showDetails} />
         ))}
       </div>
-      {results.length > limit && <button className="load-more" onClick={() => setLimit(limit + 8)}>Show more places</button>}
+      {pageCount > 1 && (
+        <div className="catalog-pages" role="group" aria-label="Place results pages">
+          {Array.from({ length: pageCount }, (_, index) => {
+            const number = index + 1;
+            return (
+              <button key={number} type="button" aria-label={'Page ' + number}
+                aria-current={number === currentPage ? 'page' : undefined} onClick={() => changePage(number)}>
+                {number}
+              </button>
+            );
+          })}
+          <span className="sr-only" role="status">Page {currentPage} of {pageCount}</span>
+        </div>
+      )}
     </section>
   );
 }

@@ -17,7 +17,7 @@
 .search-label input { padding-left: 33px; }
 .search-icon { position: absolute; left: 10px; top: 7px; font-size: 22px; color: #777464; }
 .chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0 17px; }
-.chips button, .load-more, .catalog-status button {
+.chips button, .catalog-pages button, .catalog-status button {
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--paper);
@@ -26,10 +26,11 @@
   font-size: 13px;
   font-weight: 600;
 }
-.chips button[aria-pressed='true'] { color: white; background: var(--green); border-color: var(--green); }
-.chips button[aria-pressed='false']:hover, .load-more:hover, .catalog-status button:hover { background: #eee9dc; }
+.chips button[aria-pressed='true'], .catalog-pages button[aria-current='page'] { color: white; background: var(--green); border-color: var(--green); }
+.chips button[aria-pressed='false']:hover, .catalog-pages button:not([aria-current]):hover, .catalog-status button:hover { background: #eee9dc; }
 .places { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.load-more { display: block; margin: 20px auto 0; }
+.catalog-pages { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 20px; }
+.catalog-pages button { min-width: 34px; padding-inline: 8px; }
 .catalog-status { padding: 26px; border: 1px dashed var(--border); border-radius: 8px; }
 .catalog-status button { margin-top: 10px; }
 
