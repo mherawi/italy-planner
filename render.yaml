@@ -13,5 +13,7 @@ services:
         sync: false
       - key: PLANNER_IMPORT_ENABLED
         value: "false"
-      - key: SERVER_SERVLET_SESSION_COOKIE_SECURE
+      - key: PLANNER_JWT_SECRET
+        generateValue: true
+      - key: PLANNER_JWT_COOKIE_SECURE
         value: "true"

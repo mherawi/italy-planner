@@ -18,7 +18,9 @@ To build a single JAR, run `npm ci` and `npm run build` in `frontend`, then `mvn
 
 ## API
 
-Use **Account** in the planner to register, sign in, and sign out. Accounts are stored in PostgreSQL with bcrypt password hashes. Sign-in uses an HTTP-only session cookie. Set `SERVER_SERVLET_SESSION_COOKIE_SECURE=true` for HTTPS deployments.
+Use **Account** in the planner to register, sign in, and sign out. Accounts are stored in PostgreSQL with bcrypt password hashes. Sign-in issues a signed JWT in an HttpOnly cookie that expires after eight hours. Signing out clears the browser cookie.
+
+For hosted deployments, set `PLANNER_JWT_SECRET` to a cryptographically random secret of at least 32 bytes and set `PLANNER_JWT_COOKIE_SECURE=true` for HTTPS. The Render Blueprint generates a secret. Without a configured secret, the app generates a temporary key at startup and accounts must sign in again after each restart.
 
 The planner saves your itinerary in your browser.
 
