@@ -6,7 +6,7 @@
 .brand-tail { font-style: italic; }
 nav { display: flex; align-items: center; gap: 24px; font-size: 14px; font-weight: 700; }
 .nav-trip { padding: 9px 14px; border: 1px solid #c9cbbd; border-radius: 6px; }
-.nav-trip span, .hero-link span { margin-left: 8px; }
+.nav-trip span { margin-left: 8px; }
 .hero {
   position: relative;
   display: flex;
@@ -24,9 +24,8 @@ nav { display: flex; align-items: center; gap: 24px; font-size: 14px; font-weigh
 .hero-copy { padding: 36px clamp(26px, 5vw, 76px); max-width: 510px; }
 .hero h1 { font: 400 clamp(66px, 7.4vw, 112px)/.82 var(--display); letter-spacing: -.025em; }
 .hero h1 em { color: #f2c393; }
-.hero p { margin: 25px 0 20px; max-width: 320px; font-size: 16px; line-height: 1.55; }
-.hero-link { display: inline-flex; align-items: center; padding: 11px 16px; border-radius: 6px; background: #f8eddb; color: var(--green); font-size: 14px; font-weight: 700; }
-.hero-link:hover, .nav-trip:hover { background: #ece5d6; }
+.hero p { margin-top: 25px; max-width: 320px; font-size: 16px; line-height: 1.55; }
+.nav-trip:hover { background: #ece5d6; }
 .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); gap: 30px; align-items: start; margin: 37px 0 68px; }
 
 @media (max-width: 520px) {

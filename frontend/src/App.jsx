@@ -31,7 +31,6 @@ export default function App() {
           <div className="hero-copy">
             <h1 id="page-title">Three days<br />in <em>Italy.</em></h1>
             <p>Find the places you’d love to visit and turn them into a trip of your own.</p>
-            <a className="hero-link" href="#explore">Explore places <span aria-hidden="true">↓</span></a>
           </div>
         </section>
 
