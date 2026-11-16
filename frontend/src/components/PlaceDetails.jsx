@@ -1,4 +1,5 @@
 import React from 'react';
+import './PlaceDetails.css';
 import { duration, typeName } from '../format.js';
 
 export default function PlaceDetails({ dialog, selected, activeDay, scheduled, add }) {

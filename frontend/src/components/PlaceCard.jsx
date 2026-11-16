@@ -1,4 +1,5 @@
 import React from 'react';
+import './PlaceCard.css';
 import { duration, typeName } from '../format.js';
 
 const colors = ['clay', 'olive', 'blue', 'sand'];

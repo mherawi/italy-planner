@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './PlaceCatalog.css';
 import PlaceCard from './PlaceCard.jsx';
 
 const categories = [

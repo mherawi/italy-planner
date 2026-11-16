@@ -1,0 +1,4 @@
+.details dl { display: grid; grid-template-columns: max-content 1fr; gap: 7px 12px; font-size: 13px; }
+.details dt { font-weight: 700; }
+.details dd { margin: 0; }
+.details > .add-button { margin-top: 15px; }

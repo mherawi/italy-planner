@@ -1,9 +1,10 @@
 import React from 'react';
+import './Itinerary.css';
 import { duration, itineraryDate } from '../format.js';
 import WalkingTime from './WalkingTime.jsx';
 
 export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, showDetails, reorder, remove,
-  addDay, removeLastDay, startDate, setStartDate }) {
+  addDay, removeLastDay, startDate, setStartDate, save, saving, saved, saveError }) {
   const cityCount = new Set(dayPlaces.map(place => place.city)).size;
   const minutes = dayPlaces.reduce((total, place) => total + (place.duration_minutes ?? 0), 0);
 
@@ -64,7 +65,14 @@ export default function Itinerary({ days, activeDay, setActiveDay, dayPlaces, sh
       )}
       {cityCount > 1 && <p className="trip-warning">This day includes multiple cities. Check travel time between stops.</p>}
       {minutes > 480 && <p className="trip-warning">Visits add up to more than 8 hours before travel.</p>}
-      <p className="save-note">Your plan stays in this browser.</p>
+      {save ? (
+        <div className="save-note">
+          <button type="button" className="add-button" disabled={saving || saved} onClick={save}>
+            {saving ? 'Saving…' : 'Save itinerary'}
+          </button>
+          <p role="status">{saveError || (saved ? 'Saved to your account.' : 'You have unsaved changes.')}</p>
+        </div>
+      ) : <p className="save-note">Your plan stays in this browser.</p>}
     </aside>
   );
 }

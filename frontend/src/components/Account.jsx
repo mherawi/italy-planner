@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import './Account.css';
 
 async function accountRequest(action, credentials) {
   return fetch('/api/account/' + action, {

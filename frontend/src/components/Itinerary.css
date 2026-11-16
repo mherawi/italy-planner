@@ -1,0 +1,41 @@
+#itinerary { scroll-margin-top: 18px; }
+.itinerary { position: sticky; top: 18px; background: #f0eee4; border: 1px solid #dcd8ca; border-radius: 12px; padding: 20px; }
+.itinerary-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.itinerary h2 { font: 400 37px/1 var(--display); }
+.trip-date { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.trip-date label { flex-basis: 100%; font-size: 14px; font-weight: 600; }
+.trip-date input { min-width: 0; padding: 6px 8px; border: 1px solid var(--border); border-radius: 5px; }
+.days time { font-size: 12px; font-weight: 400; }
+.trip-duration { color: #5e6452; font-size: 11px; font-weight: 700; background: #e1e5d5; padding: 5px 8px; border-radius: 4px; white-space: nowrap; }
+.day-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.days { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 5px; border: 1px solid #ddd9cb; border-radius: 7px; background: #e8e5d9; padding: 4px; margin-top: 10px; }
+.days button { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; border: 0; border-radius: 4px; background: transparent; color: var(--ink); padding: 8px 3px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.days button[aria-pressed='true'] { background: var(--green); color: #fffdf7; }
+.day-summary { display: flex; justify-content: space-between; gap: 8px; margin: 13px 0; color: var(--muted); font-size: 12px; font-weight: 600; }
+.empty-day { display: grid; justify-items: center; text-align: center; border: 1px dashed #c9c5b7; border-radius: 8px; padding: 22px 15px; }
+.empty-day > span { color: #9c5539; margin-bottom: 5px; }
+.empty-day strong { font: 400 26px var(--display); }
+.empty-day p, .save-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.empty-day p { margin-top: 5px; max-width: 200px; }
+.save-note { margin-top: 13px; }
+.stops { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+.stops li { display: flex; gap: 9px; padding: 10px; background: var(--paper); border: 1px solid var(--border); border-radius: 6px; }
+.stop-number { display: grid; place-items: center; flex: 0 0 22px; height: 22px; border-radius: 50%; color: var(--green); background: #e7ebd9; font-size: 11px; font-weight: 700; }
+.stop-body { min-width: 0; }
+.stop-body p { color: var(--muted); font-size: 12px; margin-top: 3px; }
+.stop-body .walking-time { margin-top: 6px; }
+.stop-title { border: 0; padding: 0; color: var(--ink); background: none; text-align: left; align-self: flex-start; }
+.stop-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.stop-title { font-weight: 700; font-size: 14px; }
+.stop-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.stop-actions button { border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; background: var(--paper); color: var(--ink); font-size: 11px; }
+.stop-actions button:disabled { opacity: .4; }
+.stop-actions button:hover:enabled { background: #e9ebdf; }
+
+@media (max-width: 940px) {
+  .itinerary { padding: 14px; }
+}
+
+@media (max-width: 720px) {
+  .itinerary { position: static; order: -1; }
+}

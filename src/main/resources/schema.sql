@@ -17,3 +17,8 @@ CREATE TABLE IF NOT EXISTS planner_users (
     email text PRIMARY KEY,
     password_hash text NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS planner_itineraries (
+    email text PRIMARY KEY REFERENCES planner_users(email) ON DELETE CASCADE,
+    plan jsonb NOT NULL
+);

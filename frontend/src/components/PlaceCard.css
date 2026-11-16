@@ -1,0 +1,17 @@
+.place-card { display: flex; flex-direction: column; min-width: 0; padding: 17px; background: var(--paper); border: 1px solid var(--border); border-radius: 10px; }
+.place-card:hover { border-color: #b8b9a7; }
+.card-top, .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.olive { background: #e7ebd9; color: #455332; }
+.blue { background: #e3ebeb; color: #365256; }
+.sand { background: #f1e7d2; color: #695125; }
+.rating { font-size: 12px; white-space: nowrap; font-weight: 700; }
+.rating span { color: #a56830; }
+.place-title { border: 0; padding: 0; color: var(--ink); background: none; text-align: left; align-self: flex-start; }
+.place-title { margin-top: 10px; font: 400 29px/.98 var(--display); }
+.place-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.description { margin: 11px 0 14px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: var(--muted); font-size: 13px; line-height: 1.48; }
+.card-footer { padding-top: 11px; margin-top: auto; border-top: 1px solid #e9e4da; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 940px) {
+  .place-card { padding: 13px; }
+}

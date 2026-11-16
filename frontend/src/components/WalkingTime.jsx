@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './WalkingTime.css';
 import { duration } from '../format.js';
 
 export default function WalkingTime({ from, to }) {

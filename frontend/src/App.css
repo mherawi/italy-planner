@@ -1,0 +1,56 @@
+.shell { width: min(1320px, calc(100% - 80px)); margin-inline: auto; }
+.site-header { border-bottom: 1px solid #e7e2d6; }
+.topbar { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { font-family: var(--display); font-size: 29px; white-space: nowrap; }
+.brand-mark { color: #9c5539; font: 18px 'DM Sans', sans-serif; margin-right: 5px; }
+.brand-tail { font-style: italic; }
+nav { display: flex; align-items: center; gap: 24px; font-size: 14px; font-weight: 700; }
+.nav-trip { padding: 9px 14px; border: 1px solid #c9cbbd; border-radius: 6px; }
+.nav-trip span, .hero-link span { margin-left: 8px; }
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 414px;
+  margin-top: 25px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #374737;
+  background-image: linear-gradient(90deg, rgba(22, 33, 27, .92), rgba(31, 41, 30, .69) 31%, rgba(31, 41, 30, .03) 73%), url('/florence.jpg');
+  background-size: cover;
+  background-position: center 52%;
+  color: #fff8e9;
+}
+.hero-copy { padding: 36px clamp(26px, 5vw, 76px); max-width: 510px; }
+.hero h1 { font: 400 clamp(66px, 7.4vw, 112px)/.82 var(--display); letter-spacing: -.025em; }
+.hero h1 em { color: #f2c393; }
+.hero p { margin: 25px 0 20px; max-width: 320px; font-size: 16px; line-height: 1.55; }
+.hero-link { display: inline-flex; align-items: center; padding: 11px 16px; border-radius: 6px; background: #f8eddb; color: var(--green); font-size: 14px; font-weight: 700; }
+.hero-link:hover, .nav-trip:hover { background: #ece5d6; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, 360px); gap: 30px; align-items: start; margin: 37px 0 68px; }
+
+@media (max-width: 520px) {
+  .topbar { flex-wrap: wrap; padding-block: 8px; }
+}
+
+@media (max-width: 940px) {
+  .shell { width: calc(100% - 40px); }
+  .workspace { grid-template-columns: minmax(0, 1fr) minmax(265px, 305px); gap: 16px; }
+}
+
+@media (max-width: 720px) {
+  .shell { width: calc(100% - 28px); }
+  .topbar { min-height: 58px; }
+  .brand { font-size: 24px; }
+  nav { gap: 12px; font-size: 12px; }
+  .nav-trip { padding: 7px 9px; }
+  .hero { min-height: 360px; margin-top: 14px; background-position: 58% center; }
+  .workspace { display: flex; flex-direction: column; margin-top: 23px; gap: 22px; }
+  .workspace > * { width: 100%; }
+}
+
+@media (max-width: 410px) {
+  .brand { font-size: 21px; }
+  .brand-mark { font-size: 14px; margin-right: 2px; }
+  .nav-trip span { display: none; }
+}

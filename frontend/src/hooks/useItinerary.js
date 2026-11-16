@@ -16,11 +16,12 @@ function loadDays() {
   return [[], [], []];
 }
 
-export function useItinerary(byId) {
-  const [days, setDays] = useState(loadDays);
+export function useItinerary(byId, accountPlan) {
+  const [days, setDays] = useState(() => accountPlan?.days ?? loadDays());
   const [activeDay, setActiveDay] = useState(0);
   const [announcement, setAnnouncement] = useState('');
   const [startDate, setStartDate] = useState(() => {
+    if (accountPlan) return accountPlan.startDate;
     try {
       return localStorage.getItem(startDateKey) ?? '';
     } catch {
@@ -29,21 +30,23 @@ export function useItinerary(byId) {
   });
 
   useEffect(() => {
+    if (accountPlan !== undefined) return;
     try {
       if (startDate) localStorage.setItem(startDateKey, startDate);
       else localStorage.removeItem(startDateKey);
     } catch {
       // Keep the date in memory when browser storage is unavailable.
     }
-  }, [startDate]);
+  }, [startDate, accountPlan]);
 
   useEffect(() => {
+    if (accountPlan !== undefined) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(days));
     } catch {
       // Keep the current plan in memory.
     }
-  }, [days]);
+  }, [days, accountPlan]);
 
   const dayPlaces = days[activeDay].map(id => byId.get(id)).filter(Boolean);
 

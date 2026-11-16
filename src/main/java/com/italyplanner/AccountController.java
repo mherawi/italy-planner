@@ -8,37 +8,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseCookie;
-import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.time.Duration;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/account")
 public class AccountController {
-    private static final String COOKIE = "planner_account";
+    static final String COOKIE = "planner_account";
     private final AccountService accounts;
-    private final AccountTokens tokens;
     private final boolean secureCookie;
 
-    public AccountController(AccountService accounts, AccountTokens tokens,
+    public AccountController(AccountService accounts,
                              @Value("${planner.jwt.cookie-secure:${server.servlet.session.cookie.secure:false}}") boolean secureCookie) {
         this.accounts = accounts;
-        this.tokens = tokens;
         this.secureCookie = secureCookie;
     }
 
     @GetMapping
     public Profile current(@CookieValue(name = COOKIE, defaultValue = "") String token) {
-        if (token.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        }
         try {
-            return new Profile(tokens.email(token));
-        } catch (JwtException invalid) {
+            return new Profile(accounts.currentEmail(token));
+        } catch (AccountService.AuthenticationFailed invalid) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
@@ -46,22 +39,20 @@ public class AccountController {
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, headers = "X-Planner-Request=account")
     @ResponseStatus(HttpStatus.CREATED)
     public Profile register(@RequestBody Credentials body, HttpServletResponse response) {
-        String email = validate(body, true);
         try {
-            accounts.register(email, body.password());
+            return writeSignInCookie(accounts.register(body.email(), body.password()), response);
         } catch (DataIntegrityViolationException duplicate) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         }
-        return signIn(email, response);
     }
 
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, headers = "X-Planner-Request=account")
     public Profile login(@RequestBody Credentials body, HttpServletResponse response) {
-        String email = validate(body, false);
-        if (!accounts.authenticate(email, body.password())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or password is incorrect");
+        try {
+            return writeSignInCookie(accounts.signIn(body.email(), body.password()), response);
+        } catch (AccountService.AuthenticationFailed invalid) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, invalid.getMessage());
         }
-        return signIn(email, response);
     }
 
     @PostMapping(path = "/logout", headers = "X-Planner-Request=account")
@@ -69,9 +60,9 @@ public class AccountController {
         return ResponseEntity.noContent().header(HttpHeaders.SET_COOKIE, cookie("", Duration.ZERO)).build();
     }
 
-    private Profile signIn(String email, HttpServletResponse response) {
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie(tokens.issue(email), AccountTokens.LIFETIME));
-        return new Profile(email);
+    private Profile writeSignInCookie(AccountService.SignIn signIn, HttpServletResponse response) {
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie(signIn.token(), signIn.lifetime()));
+        return new Profile(signIn.email());
     }
 
     private String cookie(String value, Duration age) {
@@ -79,15 +70,9 @@ public class AccountController {
                 .sameSite("Lax").path("/api/account").maxAge(age).build().toString();
     }
 
-    private static String validate(Credentials body, boolean registering) {
-        String email = body.email() == null ? "" : body.email().strip().toLowerCase(Locale.ROOT);
-        String password = body.password();
-        if (email.length() > 254 || !email.matches("[^@\\s]+@[^@\\s]+\\.[^@\\s]+") ||
-                password == null || password.isEmpty() || password.getBytes(StandardCharsets.UTF_8).length > 72 ||
-                (registering && password.length() < 8)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
-        }
-        return email;
+    @ExceptionHandler(AccountService.InvalidCredentials.class)
+    public void invalidCredentials(AccountService.InvalidCredentials error, HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value(), error.getMessage());
     }
 
     public record Credentials(String email, String password) {
